@@ -16,6 +16,47 @@ var connectionDB = mysql.createConnection({
     database: 'market'
 });
 //7. Validate mysql connection
+connectionDB.connect((err) => {
+    if(!err)
+        console.log('::: Succesfull connection to Data Base :::');
+    else
+        console.log('DB connection failed \n Error: ' + JSON.stringify(err,undefined,2));    
+});
 
 //8. RUN Server
 app.listen(3000,()=>console.log('Server is running at port 3000'));
+
+//9. Get all users
+app.get('/list_users',(req,res) => {
+    connectionDB.query('SELECT * FROM users',(err,rows,fields) => {
+        if(!err){
+            console.log(rows);
+            res.send(rows);
+        }else{
+            console.log(err);
+        }
+    });
+}); 
+
+//10. Get an user
+app.get('/list_users/:id',(req,res) => {
+    connectionDB.query('SELECT * FROM users WHERE id = ?',[req.params.id],(err,rows,fields) => {
+        if(!err){
+            console.log(rows);
+            res.send(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//11. Delete an user
+app.delete('/list_users/:id',(req,res) => {
+    connectionDB.query('DELETE FROM users WHERE id = ?',[req.params.id],(err,rows,fields) => {
+        if(!err){
+            console.log('::: The user has been deleted :::');
+        }else{
+            console.log(err);
+        }
+    });
+});
